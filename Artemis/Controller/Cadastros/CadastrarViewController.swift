@@ -15,11 +15,14 @@ class CadastrarViewController: UIViewController {
     @IBOutlet weak var emailTF: UITextField!
     @IBOutlet weak var senhaTF: UITextField!
     @IBOutlet weak var telefoneTF:UITextField!
+    @IBOutlet weak var cpfTF: UITextField!
+    
     var email:String?
     var senha:String?
     var uid:String?
     var nome:String?
     var telefone:String?
+    var cpf:String?
     
     var artemisDAO = ArtemisDAO()
     

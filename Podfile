@@ -12,4 +12,5 @@ pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Former'
+pod 'ImageSlideshow'
 end

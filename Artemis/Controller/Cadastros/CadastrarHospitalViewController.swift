@@ -8,7 +8,8 @@
 
 import UIKit
 
-class CadastrarHospitalViewController: UIViewController {
+class CadastrarHospitalViewController: UIViewController,  UIImagePickerControllerDelegate, UINavigationControllerDelegate
+ {
 
     @IBOutlet weak var nomeTF: UITextField!
     @IBOutlet weak var responsavelTF: UITextField!
@@ -22,17 +23,23 @@ class CadastrarHospitalViewController: UIViewController {
     @IBOutlet weak var cepTF: UITextField!
     @IBOutlet weak var ruaTF: UITextField!
     
+    @IBOutlet weak var telefoneTF: UITextField!
     @IBOutlet weak var senhaTF: UITextField!
     @IBOutlet weak var emailTF: UITextField!
     @IBOutlet weak var imageIV: UIImageView!
     @IBOutlet weak var emergenciaSW: UISwitch!
     var artemisDAO = ArtemisDAO()
-    
+    var img:UIImage?
+    var imgData:Data?
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        imageIV.isUserInteractionEnabled = true
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.alterarFoto))
+        
+        imageIV.addGestureRecognizer(longPressGesture)
         // Do any additional setup after loading the view.
     }
     
@@ -48,7 +55,7 @@ class CadastrarHospitalViewController: UIViewController {
         var numero:String = numeroTF.text!
         var rua:String = ruaTF.text!
         var cep:String = cepTF.text!
-        var telefone:String = ""
+        var telefone:String = telefoneTF.text!
         var emergencia = ""
         if(emergenciaSW.isOn){
             emergencia = "Sim"
@@ -56,23 +63,47 @@ class CadastrarHospitalViewController: UIViewController {
             emergencia = "Nao"
         }
     
-        if(email != "" && senha != "" && nome != "" && responsavel != "" && estado != "" && cidade != ""
+        if(email != "" && senha != "" && nome != "" && responsavel != "" && telefone != "" && estado != "" && cidade != ""
             && bairro != "" && numero != "" && rua != "" && cep != "" && emergencia != ""){
             var endereco:String?
             endereco = "\(nome)%\(rua), \(numero) - \(bairro), \(cidade) - \(estado), \(cep)"
-            let hospital = Hospital(nome, rua, bairro, numero, cidade, estado, cep,responsavel,telefone, emergencia, endereco!)
-            artemisDAO.cadastrarHospital(email,senha,hospital,self)
-            
-        } else{
-            let alertController = UIAlertController(title: "Artemis", message:
-                "Preencha todos os campos", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            self.present(alertController, animated: true, completion: nil)
+            if imgData != nil {
+                let hospital = Hospital(nome, rua, bairro, numero, cidade, estado, cep,responsavel,telefone, emergencia, endereco!)
+                artemisDAO.cadastrarHospital(email,senha,hospital,imgData!,self)
+                }else{
+                artemisDAO.alert("Por favor! Selecione uma imagem", self)
+            }
+        }else{
+            artemisDAO.alert("Por favor! Preencha todos os campos", self)
         }
-        
     }
     
+    @objc func alterarFoto() {
+        let imageController  = UIImagePickerController()
+        imageController.delegate = self
+        imageController.sourceType = .photoLibrary
+        self.present(imageController, animated: true, completion: nil)
+    }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
+    {
+        
+        img = info[UIImagePickerController.InfoKey.originalImage] as?  UIImage
+        
+        imageIV.image = img
+        
+        imgData =  imageIV.image?.pngData()
+        // uploadProfileImage(imageData: imgData!)
+        picker.dismiss(animated: true, completion:nil)
+    }
+
+
+
+
+func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
+{
+    picker.dismiss(animated: true, completion:nil)
+}
     
     
     /*

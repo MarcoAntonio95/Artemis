@@ -10,75 +10,75 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class HospitaisViewController: UIViewController {
-    @IBOutlet weak var map: MKMapView!
-    var name:String?
-    var local:String?
-    let lm = CLLocationManager()
-    let artemisDAO = ArtemisDAO()
-    var emergencias:[Hospital] = []
+class HospitaisViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate {
+//
     
+    let locationManager = CLLocationManager()
+    
+    
+    @IBOutlet weak var map: MKMapView!
+    
+    var locais:[Hospital] = []
+    var myLocation:CLLocationCoordinate2D?
+    var artemisDAO = ArtemisDAO()
+    var cont = 0
     override func viewDidLoad() {
+        
+        super.viewDidLoad()
+  
     artemisDAO.carregarHospitais()
- 
+//
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+        }
+        
+        map.delegate = self
+        map.mapType = .standard
+        map.isZoomEnabled = true
+        map.isScrollEnabled = true
+        
+        if let coor = map.userLocation.location?.coordinate{
+            map.setCenter(coor, animated: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        map.showsUserLocation = true;
+ 
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        map.showsUserLocation = false
+    }
+    
+    func centerMap(_ center:CLLocationCoordinate2D){
+        let anotacao = MKPointAnnotation()
+        anotacao.coordinate = center
+        anotacao.title = "Você está aqui"
+        map.addAnnotation(anotacao)
         
-//
-//        lm.desiredAccuracy = kCLLocationAccuracyHundredMeters
-//        lm.requestWhenInUseAuthorization()
-//        UIApplication.shared.beginIgnoringInteractionEvents()
-//        let activityIndicator = UIActivityIndicatorView(style: .gray)
-//        activityIndicator.center = self.view.center
-//        activityIndicator.hidesWhenStopped = true
-//        activityIndicator.startAnimating()
-//
-//        self.view.addSubview(activityIndicator)
-//
-//        let searchRequest = MKLocalSearch.Request()
-//        searchRequest.naturalLanguageQuery = local!
-//
-//        let activeSearch = MKLocalSearch(request: searchRequest)
-//
-//        activeSearch.start { (response, error) in
-//            activityIndicator.stopAnimating()
-//            UIApplication.shared.endIgnoringInteractionEvents()
-//
-//            if response == nil {
-//
-//                print("Error")
-//
-//            }else {
-//
-//                let latitude = response?.boundingRegion.center.latitude
-//
-//                let longitude = response?.boundingRegion.center.longitude
-//
-//                let anotation = MKPointAnnotation()
-//
-//                anotation.title = self.name!
-//
-//                anotation.subtitle = self.local
-//
-//                anotation.coordinate = CLLocationCoordinate2DMake(latitude!, longitude!)
-//
-//                self.map.addAnnotation(anotation)
-//
-//                let coordenada: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude!, longitude!)
-//
-//                let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
-//
-//                let region = MKCoordinateRegion(center: coordenada, span: span)
-//
-//                self.map.setRegion(region, animated: true)
-//
-//            }
-//
+        let spanX = 0.007
+        let spanY = 0.007
+        let newRegion = MKCoordinateRegion(center:center , span: MKCoordinateSpan(latitudeDelta: spanX, longitudeDelta: spanY));
+        map.setRegion(newRegion, animated: true)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let posAtual:CLLocationCoordinate2D = manager.location!.coordinate
+          artemisDAO.definirMapAtual(map)
+        artemisDAO.definirPosAtual(posAtual)
+//        if cont == 0 {
+//               artemisDAO.carregarHospitais()
+//            cont += 1
 //        }
-//
-//
-
-   
+        centerMap(posAtual)
+    }
 }

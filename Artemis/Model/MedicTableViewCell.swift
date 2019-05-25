@@ -15,15 +15,13 @@ class MedicTableViewCell: UITableViewCell {
     @IBOutlet weak var telefoneLB: UILabel!
     @IBOutlet weak var especialidadeLB: UILabel!
     @IBOutlet weak var medicIV: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

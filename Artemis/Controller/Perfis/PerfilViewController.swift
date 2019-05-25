@@ -10,11 +10,12 @@ import UIKit
 
 class PerfilViewController: UIViewController {
     var artemisDAO = ArtemisDAO()
-    @IBOutlet weak var emailLB: UILabel!
+  
     @IBOutlet weak var cpfLB: UILabel!
     @IBOutlet weak var nomeLB: UILabel!
     @IBOutlet weak var telefoneLB: UILabel!
     
+    @IBOutlet weak var perfilIV: UIImageView!
     @IBOutlet weak var petsIV: UIImageView!
 
     override func viewDidLoad() {
@@ -28,8 +29,9 @@ class PerfilViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         if ArtemisDAO.usuarioAtual != nil {
+            perfilIV.image = ArtemisDAO.imageProfile
+            artemisDAO.carregarImagem(perfilIV, "perfil")
             nomeLB.text = ArtemisDAO.usuarioAtual?.nome
-            emailLB.text = ArtemisDAO.usuarioAtual?.email
             telefoneLB.text = ArtemisDAO.usuarioAtual?.telefone
             cpfLB.text = ArtemisDAO.usuarioAtual?.cpf
         }

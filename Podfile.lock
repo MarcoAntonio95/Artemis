@@ -71,6 +71,9 @@ PODS:
   - GoogleUtilities/UserDefaults (5.5.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.1)
+  - ImageSlideshow (1.7.0):
+    - ImageSlideshow/Core (= 1.7.0)
+  - ImageSlideshow/Core (1.7.0)
   - leveldb-library (1.20)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
@@ -85,6 +88,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Storage
   - Former
+  - ImageSlideshow
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -100,6 +104,7 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleUtilities
     - GTMSessionFetcher
+    - ImageSlideshow
     - leveldb-library
     - nanopb
 
@@ -116,9 +121,10 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 1624046ab1bcc5e170061a56ef5679000b079c8e
   GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
+  ImageSlideshow: f8eec5e37a980f60923b585ff23b0e140fd24018
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
 
-PODFILE CHECKSUM: 3b1f24f9be0ff638078755966fcb024efc675c2e
+PODFILE CHECKSUM: b3adc4a5b79e25316af8a159c0a11ceb5feca549
 
 COCOAPODS: 1.6.1

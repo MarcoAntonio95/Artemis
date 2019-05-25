@@ -15,13 +15,21 @@ class Consulta{
     var data:String?
     var local:String?
     var descricao:String?
+    var especialidade:String?
+    var pet:String?
     
-    init(_ codigo:String, _ medico:String, _ hora:String, _ data:String, _ local:String, _ descricao:String) {
+    init() {
+    }
+    
+    init(_ codigo:String, _ medico:String, _ hora:String, _ data:String, _ local:String,_ especialidade:String, _ descricao:String, _ pet:String) {
         self.codigo = codigo
         self.medico = medico
         self.hora = hora
         self.data = data
         self.local = local
+        self.especialidade = especialidade
         self.descricao = descricao
+        self.pet = pet
     }
+    
 }

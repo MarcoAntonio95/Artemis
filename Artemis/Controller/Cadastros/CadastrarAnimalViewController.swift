@@ -25,11 +25,15 @@ class CadastrarAnimalViewController: UIViewController, UIPickerViewDelegate, UIP
     var img:UIImage?
     var imgData:Data?
     var artemisDAO = ArtemisDAO()
-    var portes:[String] = ["Pequeno","Médio","Grande"]
+    var portes:[String] = ["Porte:","Pequeno","Médio","Grande"]
     override func viewDidLoad() {
         super.viewDidLoad()
         self.portePV.delegate = self
         self.portePV.dataSource = self
+        fotoIV.isUserInteractionEnabled = true
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.alterarFoto))
+            
+        fotoIV.addGestureRecognizer(longPressGesture)
         // Do any additional setup after loading the view.
     }
     
@@ -71,7 +75,7 @@ class CadastrarAnimalViewController: UIViewController, UIPickerViewDelegate, UIP
    
 }
 
-    @IBAction func alterarFoto(_ sender: Any) {
+    @IBAction func alterarFoto() {
         let imageController  = UIImagePickerController()
         imageController.delegate = self
         imageController.sourceType = .photoLibrary
@@ -91,6 +95,8 @@ class CadastrarAnimalViewController: UIViewController, UIPickerViewDelegate, UIP
     }
     
 }
+
+
 
 func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
     {
